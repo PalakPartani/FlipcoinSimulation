@@ -4,15 +4,15 @@ declare -A coinDict
 result=""
 readonly HEAD="H"
 readonly TAIL="T"
-#checking for no of times
-coinFlip()
-{
-	for((i=1;i<=$num;i++))
+
+coinFlip() {
+		#Looping for no of times
+		for((i=1;i<=$num;i++))
 		do
 			result=""
-			for((j=1;j<=$coin;j++))
+			for((j=1;j<=$coin;j++)) 		
 			do
-				if (($((RANDOM%2))==1)) #for multiple times
+				if (($((RANDOM%2))==1)) 
 				then			
 					result=$result$HEAD	
 				else
@@ -21,11 +21,9 @@ coinFlip()
 			done
 			coinDict[$result]=$((${coinDict[$result]}+1))
 		done
-		echo "${!coinDict[@]}"
-		echo "${coinDict[@]}"
-		calculatePercent
-
-
+	echo "${!coinDict[@]}"
+	echo "${coinDict[@]}"
+	calculatePercent
 }
 	
 calculatePercent()
@@ -36,16 +34,24 @@ calculatePercent()
 		coinDict[$i]=$( echo "scale=2; $value * 100 / $num" | bc )
 	done
 }
-read -p "Enter a how many times for flipping a coin : " num
+read -p "Enter how many times you want to flip a coin : " num
 read -p "Enter the number of coin " coin
 case $coin in
 	1)
-		echo "This is singlet"
+		echo "This is singlet combination"
 		coinFlip
-		
 		echo "Percentage are : " ${coinDict[@]}
 		;;
+	
+	2)
+		echo "This is doublet Combination"
+		coinFlip
+		echo "key are :    " ${!coinDict[@]}
+		echo "Values are : " ${coinDict[@]}	
+		#calcPercent	
+		#echo "Percentage are : " ${coinDict[@]}
+		;;
 	*)
-		echo "Error"
+		echo "Invalid choice!"
 	
 esac
