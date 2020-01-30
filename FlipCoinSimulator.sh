@@ -1,10 +1,18 @@
 #!/bin/bash 
 echo "Welcome to flipcoin simulation "
 declare -A coinDict
-result=""
-readonly HEAD="H"
-readonly TAIL="T"
 
+#Sorting combinations
+sorting() {
+		echo "Winning Percent "
+		for i in ${!coinDict[@]}
+		do
+			echo "$i ${coinDict[$i]}"
+		done | sort -k2 -rn | head -n 1
+
+}
+
+#checking for no of times
 coinFlip() {
 		#Looping for no of times
 		for((i=1;i<=$num;i++))
@@ -14,9 +22,9 @@ coinFlip() {
 			do
 				if (($((RANDOM%2))==1)) 
 				then			
-					result=$result$HEAD	
+					result=$result"H"	
 				else
-					result=$result$TAIL
+					result=$result"T"
 				fi			
 			done
 			coinDict[$result]=$((${coinDict[$result]}+1))
@@ -25,7 +33,8 @@ coinFlip() {
 	echo ${coinDict[@]}
 	calculatePercent
 }
-	
+
+#Calculating Percentage			
 calculatePercent() {
 			for i in ${!coinDict[@]}
 			do
@@ -34,11 +43,18 @@ calculatePercent() {
 			done
 			echo "key are :    " ${!coinDict[@]}
 			echo "Percentage are : " ${coinDict[@]}	
-
+			sorting
 }
-read -p "Enter how many times you want to flip a coin : " num
-read -p "Enter the number of coin " coin
-case $coin in
+
+#if -eq used then it wil consider it as integer
+value="Y"
+while [ "$value" == "Y" -o "$value" == "y" ]
+do
+	read -p "Enter how many times you want to flip a coin : " num
+	read -p "Enter the number of coin " coin
+	#Clearing dictionary	
+	coinDict=()
+	case $coin in
 	1)
 		echo "This is singlet combination"
 		coinFlip
@@ -54,5 +70,8 @@ case $coin in
 		;;
 	*)
 		echo "Invalid choice!"
+
+	esac
+read -p "Press Y to continue " value
+done
 	
-esac
